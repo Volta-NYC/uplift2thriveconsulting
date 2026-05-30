@@ -1,62 +1,73 @@
-# Purpose
-This repository is the base template that should be used for all future businesses, including basic files such as navbar, footer, and other configs.
+# Uplift 2 Thrive Consulting — Website
 
-# Business Name
+A modern, premium rebuild of [uplift2thriveconsulting.com](https://uplift2thriveconsulting.com)
+for **Uplift 2 Thrive Consulting LLC** — a purpose-driven brand strategy &
+coaching ecosystem for BIPOC entrepreneurs and nonprofit leaders, led by
+founder & CEO **Chanté Ramsey**.
 
-Replace this README with business-specific details.
+## Stack
 
----
+- **Next.js 15** (App Router) + **React 19** + **TypeScript**
+- **Tailwind CSS v4** (CSS-first `@theme` tokens)
+- `next/font` — **Fraunces** (display) + **Hanken Grotesk** (body)
+- Fully static output (all routes prerendered) — fast, cheap, portable
+- **Zero external media dependency** — all images are served locally
 
-## 🚀 Overview
+## Design language
 
-Short description of the business and what this website is for.
+A premium, editorial take on the brand's own logo palette: **royal purple,
+magenta, and golden amber** on a soft lilac-white canvas. Confident, human, and
+momentum-driven — a deliberate departure from the original WordPress theme.
+Design tokens live in `src/app/globals.css`.
 
-Example:
-"This website serves as the official online presence for [Business Name], showcasing services, contact information, and brand identity."
+The brand logo is processed once into transparent PNGs (colour mark, white
+silhouette for dark UI, and the favicon) by `scripts/process-logo.mjs`, which
+reads `full-logo.jpg` / `favicon.jpg` and writes to `public/images/brand/` and
+`src/app/icon.png`.
 
----
+## Project structure
 
-## 🛠 Tech Stack
+```
+src/
+  app/                 # App Router routes (one folder per page)
+    page.tsx           # Home
+    services/          # 1:1 coaching packages
+    aspire-higher/     # Cohort coaching program
+    labs-workshops/    # Facilitated workshops
+    community/         # Community Conversations + "Uplift The Village" feature form
+    events/            # Events list + [slug] detail pages
+    about/             # Founder story + V.A.L.I.D. method + press
+    contact/           # Contact form + details
+    privacy-policy/    # Legal
+    terms-of-service/  # Legal
+    sitemap.ts, robots.ts, icon.svg, not-found.tsx
+  components/          # Reusable UI (Header, Footer, cards, forms, primitives)
+  data/                # Normalized content extracted from the source material
+    site.ts            # Business identity, nav, V.A.L.I.D., journey, press
+    services.ts        # The four coaching packages
+    programs.ts        # Aspire Higher tracks + workshop offerings
+    events.ts          # Event calendar entries
+    testimonials.ts    # Client testimonials
+  lib/                 # Small helpers (cn)
+public/images/         # All media, organized + locally served
+scripts/
+  download-images.sh   # Re-fetch & rename source media into public/images
+```
 
-- Next.js (App Router)
-- TypeScript
-- Tailwind CSS
-- Hosted on Vercel
+## Content provenance
 
----
+All business content — copy, pricing, services, events, testimonials, policies,
+and media — was extracted and normalized from the scraped source material in the
+repository's `raw messy data/` folder. No factual business data was invented.
+Forms submit via a pre-filled email (`mailto:`) so they work with no backend;
+booking links point to the business's live Calendly.
 
-## 📂 Project Structure
-
-- `src/app` → App Router (homepage, layout, globals)
-- `src/app/pages` → Site pages (About, Contact, etc.)
-- `src/lib/components` → Shared UI components (Navbar/Footer)
-- `public` → Static assets
-
----
-
-## 🧑‍💻 Development
-
-Install dependencies:
+## Develop
 
 ```bash
 npm install
-npm install --save-dev @types/react
+npm run dev      # http://localhost:3000
+npm run build    # production build (static)
+npm start        # serve the production build
+npm run images   # (re)download source media into public/images
 ```
-
-Run locally:
-
-```bash
-npm run dev
-```
-
----
-
-## ✏️ Customization Checklist
-
-- [ ] Replace Business Name in navbar + footer
-- [ ] Update metadata in `src/app/layout.tsx`
-- [ ] Replace homepage content (`src/app/page.tsx`)
-- [ ] Update About + Contact pages (`src/app/pages/*`)
-- [ ] Replace favicon + assets in `public/`
-- [ ] Update SEO metadata
-- [ ] (Optional) Update Volta credit link text / URL in the footer

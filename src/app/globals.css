@@ -1,12 +1,174 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-html, body {
-  padding: 0;
-  margin: 0;
+/* ------------------------------------------------------------------ *
+ *  Uplift 2 Thrive — design tokens
+ *  Drawn from the brand logo: royal purple, magenta, and golden amber
+ *  on a soft lilac-white canvas. Fraunces display / Hanken Grotesk body.
+ *
+ *  Token map (names kept stable; values match the logo):
+ *    plum / plum-deep / ink  → royal & deep purples (logo wordmark)
+ *    clay / clay-deep        → magenta / hot pink (logo accent figure)
+ *    gold / gold-soft        → golden amber (logo side figures)
+ *    sage                    → orchid violet (supporting accent)
+ * ------------------------------------------------------------------ */
+@theme {
+  --color-canvas: #f7f5fb;
+  --color-paper: #ffffff;
+  --color-ink: #1c0e33;
+  --color-ink-soft: #4e3b6b;
+  --color-muted: #897ca2;
+
+  --color-plum: #4a1a8c;
+  --color-plum-deep: #2a0a5e;
+  --color-clay: #d11a92;
+  --color-clay-deep: #a81271;
+  --color-gold: #f2a91c;
+  --color-gold-soft: #f8cd6b;
+  --color-sage: #6e3fb0;
+
+  --color-line: rgba(28, 14, 51, 0.14);
+  --color-line-soft: rgba(28, 14, 51, 0.08);
+
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-body: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 1.25rem;
+
+  --shadow-soft: 0 1px 2px rgba(28, 14, 51, 0.05),
+    0 12px 40px -16px rgba(42, 10, 94, 0.2);
+  --shadow-lift: 0 2px 6px rgba(28, 14, 51, 0.07),
+    0 24px 60px -24px rgba(42, 10, 94, 0.32);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-* {
-  box-sizing: border-box;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "ss01", "cv01";
+  }
+
+  ::selection {
+    background-color: var(--color-clay);
+    color: var(--color-paper);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 470;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+  }
+
+  /* Distinctive thin focus ring matching the brand */
+  :focus-visible {
+    outline: 2px solid var(--color-clay);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer utilities {
+  /* Subtle paper-grain atmosphere applied to dark sections */
+  .grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    mix-blend-mode: soft-light;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  .eyebrow {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  /* Animated underline link */
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.4s var(--ease-out-expo);
+  }
+  .link-underline:hover {
+    background-size: 100% 1px;
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 0.8s var(--ease-out-expo),
+      transform 0.8s var(--ease-out-expo);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* Marquee for the press / partners band */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 34s linear infinite;
+}
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
 }
